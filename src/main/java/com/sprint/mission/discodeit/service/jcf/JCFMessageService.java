@@ -1,5 +1,6 @@
 package com.sprint.mission.discodeit.service.jcf;
 
+import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.service.MessageService;
@@ -14,20 +15,20 @@ public class JCFMessageService implements MessageService {
 
 
     @Override
-    public Message create(String content, User sender) {
-        Message message = new Message(content, sender);
+    public Message create(Channel channel, String content, User sender) {
+        Message message = new Message(channel,content, sender);
         data.put(message.getId(), message);
         return message;
     }
 
     @Override
-    public Message getById(Message message) {
+    public Message getMessage(Message message) {
         validationMessage(message);
         return data.get(message.getId());
     }
 
     @Override
-    public List<Message> getAll() {
+    public List<Message> getAllMessages() {
         return new ArrayList<>(data.values());
     }
 
@@ -44,9 +45,9 @@ public class JCFMessageService implements MessageService {
 
 
     @Override
-    public boolean delete(Message message) {
+    public void delete(Message message) {
         validationMessage(message);
-        return data.remove(message.getId()) != null;
+        data.remove(message.getId());
     }
 
     public void  validationMessage(Message message){

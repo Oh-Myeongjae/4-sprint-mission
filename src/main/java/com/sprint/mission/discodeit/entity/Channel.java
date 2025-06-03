@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Channel extends BaseEntity {
-    private final List<Integer> users;
+    private final List<User> users;
+    private final List<Message> messages;
     private String name;
 
     public Channel(String name) {
         super();
         this.users = new ArrayList<>();
+        this.messages = new ArrayList<>();
         this.name = name;
     }
 
@@ -22,19 +24,31 @@ public class Channel extends BaseEntity {
         this.setUpdatedAt();
     }
 
-    public List<Integer> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void addUser(int userId) {
-        users.add(userId);
+    public void addUser(User user) {
+        users.add(user);
         this.setUpdatedAt();
     }
 
-    public void removeUser(int userId) {
-        users.remove(userId);
+    public void removeUser(User user) {
+        users.remove(user);
         this.setUpdatedAt();
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
 
+    public void addMessage(Message message) {
+        messages.add(message);
+        this.setUpdatedAt();
+    }
+
+    public void removeMessage(Message message) {
+        messages.remove(message);
+        this.setUpdatedAt();
+    }
 }
