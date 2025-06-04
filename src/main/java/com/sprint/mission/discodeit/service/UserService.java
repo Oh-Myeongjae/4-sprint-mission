@@ -22,6 +22,6 @@ public interface UserService {
 
     void sendMessage(User user, Message message);
     List<Message> getMessages(User user, Channel channel);
-    void deleteMessage(User user, Channel channel, Message message);
+    void deleteMessage(User user, Message message);
 
 }

@@ -44,6 +44,7 @@ public class JCFUserService implements UserService {
     public void deleteUser(User user) {
         validateUser(user);
         data.remove(user.getId());
+        user.getChannels().forEach(channel -> channel.getUsers().remove(user));
     }
 
     @Override
@@ -72,12 +73,12 @@ public class JCFUserService implements UserService {
     }
 
     @Override
-    public void deleteMessage(User user, Channel channel, Message message) {
+    public void deleteMessage(User user, Message message) {
         user.removeMessage(message);
     }
 
     public void validateUser(User user) {
-        if(!data.containsKey(user.getId())){
+        if (!data.containsKey(user.getId())) {
             throw new IllegalArgumentException("유효하지 않은 유저입니다.");
         }
     }

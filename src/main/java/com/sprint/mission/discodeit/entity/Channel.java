@@ -51,4 +51,13 @@ public class Channel extends BaseEntity {
         messages.remove(message);
         this.setUpdatedAt();
     }
+
+    @Override
+    public String toString() {
+        return "Channel{" +
+                "users=" + users +
+                ", messages=" + messages +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

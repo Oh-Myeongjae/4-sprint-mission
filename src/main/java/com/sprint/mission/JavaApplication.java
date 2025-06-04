@@ -33,9 +33,10 @@ public class JavaApplication {
         // 사용자 삭제 및 삭제 확인 테스트
         userService.deleteUser(user1);
         System.out.println("전체 사용자 목록: " + userService.getAllUsers());
+        System.out.println();
 
         // 2. 채널 서비스 테스트
-        System.out.println("\n==== 채널 서비스 테스트 ====");
+        System.out.println("==== 채널 서비스 테스트 ====");
         JCFChannelService channelService = new JCFChannelService();
 
         // 채널 생성
@@ -62,10 +63,10 @@ public class JavaApplication {
         // 채널 삭제 및 삭제 확인 테스트
         channelService.deleteChannel(channel1);
         System.out.println("전체 채널 목록: " + channelService.getAllChannel());
-
+        System.out.println();
 
         // 3. 메시지 서비스 테스트
-        System.out.println("\n==== 메시지 서비스 테스트 ====");
+        System.out.println("==== 메시지 서비스 테스트 ====");
         JCFMessageService messageService = new JCFMessageService();
 
         // 메시지 테스트용 채널 생성

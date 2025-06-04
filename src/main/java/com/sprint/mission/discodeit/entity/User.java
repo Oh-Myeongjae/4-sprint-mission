@@ -24,8 +24,10 @@ public class User extends BaseEntity{
     public List<Message> getMessages() {return messages;}
 
     public void addChannel(Channel channel) {
-        channels.add(channel);
-        this.setUpdatedAt();
+        if(!channels.contains(channel)) {
+            channels.add(channel);
+            this.setUpdatedAt();
+        }
     }
 
     public void removeChannel(Channel channel) {
@@ -44,5 +46,10 @@ public class User extends BaseEntity{
     public void updateNickName(String nickName) {
         this.nickName = nickName;
         this.setUpdatedAt();
+    }
+
+    @Override
+    public String toString() {
+        return "User{nickName=" + nickName + "}";
     }
 }

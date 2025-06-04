@@ -12,7 +12,7 @@ public interface ChannelService {
     Channel getChannel(Channel channel);
     List<Channel> getAllChannel();
 
-    Channel updateChannel(Channel channel, String name);
+    void updateChannel(Channel channel, String name);
 
     void deleteChannel(Channel channel);
 

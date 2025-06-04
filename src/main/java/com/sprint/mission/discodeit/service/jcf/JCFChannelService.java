@@ -33,14 +33,13 @@ public class JCFChannelService implements ChannelService {
     }
 
     @Override
-    public Channel updateChannel(Channel channel, String name) {
+    public void updateChannel(Channel channel, String name) {
         validateChannel(channel);
         Channel updateChannel = data.get(channel.getId());
 
         updateChannel.updateName(name);
         data.put(channel.getId(), updateChannel);
 
-        return updateChannel;
     }
 
 
@@ -52,22 +51,34 @@ public class JCFChannelService implements ChannelService {
 
     @Override
     public void enterChannel(User user, Channel channel) {
-        channel.addUser(user);
+        if (!channel.getUsers().contains(user)) {
+            channel.addUser(user);
+            user.addChannel(channel);
+        }
     }
 
     @Override
     public void leaveChannel(User user, Channel channel) {
-        channel.removeUser(user);
+        if (channel.getUsers().contains(user)) {
+            user.removeChannel(channel);
+            channel.removeUser(user);
+        }
     }
 
     @Override
     public void sendMessage(Channel channel, Message message) {
-        channel.addMessage(message);
+        if (channel.getMessages().contains(message)) {
+            channel.addMessage(message);
+            message.getSender().addChannel(channel);
+        }
     }
 
     @Override
     public void deleteMessage(Channel channel, Message message) {
-        channel.removeMessage(message);
+        if (channel.getMessages().contains(message)) {
+            channel.removeMessage(message);
+            message.getSender().removeChannel(channel);
+        }
     }
 
     @Override

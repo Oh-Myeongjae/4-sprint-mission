@@ -4,6 +4,7 @@ import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.service.MessageService;
+
 import java.util.*;
 
 public class JCFMessageService implements MessageService {
@@ -18,6 +19,7 @@ public class JCFMessageService implements MessageService {
     public Message create(Channel channel, String content, User sender) {
         Message message = new Message(channel,content, sender);
         data.put(message.getId(), message);
+        sender.addMessage(message);
         return message;
     }
 
@@ -43,10 +45,10 @@ public class JCFMessageService implements MessageService {
         return updateMessage;
     }
 
-
     @Override
     public void delete(Message message) {
         validationMessage(message);
+        message.getSender().removeMessage(message);
         data.remove(message.getId());
     }
 
