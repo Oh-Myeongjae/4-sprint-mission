@@ -7,7 +7,7 @@ import com.sprint.mission.discodeit.entity.User;
 import java.util.List;
 
 public interface ChannelService {
-    Channel createChannel(String name);
+    Channel createChannel(User user, String name);
 
     Channel getChannel(Channel channel);
     List<Channel> getAllChannel();
@@ -19,9 +19,8 @@ public interface ChannelService {
     void enterChannel(User user, Channel channel);
     void leaveChannel(User user, Channel channel);
 
-    void sendMessage(Channel channel, Message message);
-    void deleteMessage(Channel channel, Message message);
 
     List<User> getUsers(Channel channel);
     List<Message> getMessages(Channel channel);
+    void validateChannel(Channel channel);
 }

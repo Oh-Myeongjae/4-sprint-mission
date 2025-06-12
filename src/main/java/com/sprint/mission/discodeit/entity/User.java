@@ -1,9 +1,11 @@
 package com.sprint.mission.discodeit.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User extends BaseEntity{
+public class User extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nickName;
     private final List<Channel> channels;
     private final List<Message> messages;
@@ -50,6 +52,6 @@ public class User extends BaseEntity{
 
     @Override
     public String toString() {
-        return "User{nickName=" + nickName + "}";
+        return this.getId()+","+this.nickName;
     }
 }

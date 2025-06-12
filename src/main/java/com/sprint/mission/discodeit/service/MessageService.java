@@ -16,5 +16,5 @@ public interface MessageService {
 
     void delete(Message message);
 
-
+    void validationMessage(Message message);
 }

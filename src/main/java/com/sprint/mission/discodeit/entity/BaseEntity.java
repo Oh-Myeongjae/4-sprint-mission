@@ -3,7 +3,7 @@ package com.sprint.mission.discodeit.entity;
 import java.util.UUID;
 
 public class BaseEntity {
-    private final UUID id;
+    private UUID id;
     private final long createdAt;
     private long updatedAt;
 
@@ -16,6 +16,7 @@ public class BaseEntity {
     public UUID getId() {
         return id;
     }
+    public void setId(String id) {this.id = UUID.nameUUIDFromBytes(id.getBytes());}
 
     public long getCreatedAt() {
         return createdAt;

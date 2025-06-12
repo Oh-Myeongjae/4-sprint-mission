@@ -1,6 +1,9 @@
 package com.sprint.mission.discodeit.entity;
 
-public class Message extends BaseEntity{
+import java.io.Serializable;
+
+public class Message extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String content;
     private final User sender;
     private final Channel channel;
@@ -31,7 +34,7 @@ public class Message extends BaseEntity{
         return "Message{" +
                 "content='" + content + '\'' +
                 ", sender=" + sender +
-                ", channel=" + channel +
+                ", channel=" + channel.getName() +
                 '}';
     }
 }

@@ -15,8 +15,8 @@ public class JCFChannelService implements ChannelService {
     }
 
     @Override
-    public Channel createChannel(String name) { // 새 채널을 생성하여 저장
-        Channel channel = new Channel(name);
+    public Channel createChannel(User user,String name) { // 새 채널을 생성하여 저장
+        Channel channel = new Channel(user,name);
         data.put(channel.getId(), channel);
         return channel;
     }
@@ -59,22 +59,6 @@ public class JCFChannelService implements ChannelService {
         if (channel.getUsers().contains(user)) {
             user.removeChannel(channel);
             channel.removeUser(user);
-        }
-    }
-
-    @Override
-    public void sendMessage(Channel channel, Message message) { // 채널에 메시지 추가
-        if (channel.getMessages().contains(message)) {
-            channel.addMessage(message);
-            message.getSender().addChannel(channel);
-        }
-    }
-
-    @Override
-    public void deleteMessage(Channel channel, Message message) { // 메시지를 채널에서 제거
-        if (channel.getMessages().contains(message)) {
-            channel.removeMessage(message);
-            message.getSender().removeChannel(channel);
         }
     }
 

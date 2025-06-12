@@ -1,16 +1,18 @@
 package com.sprint.mission.discodeit.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Channel extends BaseEntity {
+public class Channel extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<User> users;
     private final List<Message> messages;
     private String name;
 
-    public Channel(String name) {
+    public Channel(User user, String name) {
         super();
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>(List.of(user));
         this.messages = new ArrayList<>();
         this.name = name;
     }
@@ -55,7 +57,7 @@ public class Channel extends BaseEntity {
     @Override
     public String toString() {
         return "Channel{" +
-                "users=" + users +
+                "users=" + users.stream().map(User::getNickName).toList() +
                 ", messages=" + messages +
                 ", name='" + name + '\'' +
                 '}';
