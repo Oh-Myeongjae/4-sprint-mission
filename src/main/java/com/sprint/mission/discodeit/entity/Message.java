@@ -1,5 +1,6 @@
 package com.sprint.mission.discodeit.entity;
 
+<<<<<<< HEAD
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -45,4 +46,48 @@ public class Message implements Serializable {
     public void setBinaryContentIds(List<UUID> binaryContentIds) {
         this.binaryIds = binaryContentIds;
     }
+=======
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class Message extends BaseEntity {
+    private String content;
+    private User user;
+    private Channel channel;
+
+    public Message(String content, User user, Channel channel) {
+        super();
+        this.content = content;
+        this.user = user;
+        this.channel = channel;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+
+    public void addUser(User user){
+        this.user = user;
+    }
+
+    public void deleteUser(User user){
+        this.user = user;
+    }
+
+    public void addChannel(Channel channel){
+        this.channel = channel;
+    }
+
+    public void deleteChannel(Channel channel){
+        this.channel = channel;
+    }
+
+    public void updateContent(String newContent){
+        this.content = newContent;
+        updateTimeStamp();
+    }
+
+>>>>>>> b9e39681b59d5df773deee8369d6d1b81958f2f6
 }
