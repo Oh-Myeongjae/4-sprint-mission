@@ -21,15 +21,15 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider  {
   @Getter
   @Value("${jwt.key}")
-  private String secretKey;       // (2)
+  private String secretKey;
 
   @Getter
   @Value("${jwt.access-token-expiration-minutes}")
-  private int accessTokenExpirationMinutes;        // (3)
+  private int accessTokenExpirationMinutes;
 
   @Getter
   @Value("${jwt.refresh-token-expiration-minutes}")
-  private int refreshTokenExpirationMinutes;          // (4)
+  private int refreshTokenExpirationMinutes;
 
   //액세스 토큰 발급
   public String generateAccessToken(Map<String, Object> claims,
