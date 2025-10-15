@@ -1,6 +1,5 @@
 package com.sprint.mission.discodeit.auth.jwt;
 
-
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
@@ -16,7 +15,6 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-// (1)
 @Component
 public class JwtTokenProvider  {
   @Getter
