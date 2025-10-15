@@ -8,6 +8,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -93,6 +95,26 @@ public class JwtTokenProvider  {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public void addRefreshCookie(HttpServletResponse response, String refreshToken) {
+
+    Cookie cookie = generateRefreshTokenCookie(refreshToken);
+
+    response.addCookie(cookie);
+  }
+
+  public Cookie generateRefreshTokenCookie(String refreshToken) {
+
+
+    Cookie cookie = new Cookie("REFRESH_TOKEN", refreshToken);
+
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false); // HTTP도 동작하도록 설정
+    cookie.setPath("/");
+    cookie.setMaxAge(refreshTokenExpirationMinutes * 60);
+
+    return cookie;
   }
 
   public Map<String, Object> getClaims(String token) {
