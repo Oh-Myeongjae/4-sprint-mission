@@ -1,9 +1,14 @@
 package com.sprint.mission.discodeit.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sprint.mission.discodeit.auth.jwt.InMemoryJwtRegistry;
+import com.sprint.mission.discodeit.auth.jwt.JwtRegistry;
+import com.sprint.mission.discodeit.auth.jwt.JwtTokenProvider;
 import com.sprint.mission.discodeit.entity.Role;
 import com.sprint.mission.discodeit.security.Http403ForbiddenAccessDeniedHandler;
 import com.sprint.mission.discodeit.security.JwtLoginSuccessHandler;
+import com.sprint.mission.discodeit.security.JwtLogoutHandler;
+import com.sprint.mission.discodeit.security.JwtVerificationFilter;
 import com.sprint.mission.discodeit.security.LoginFailureHandler;
 import com.sprint.mission.discodeit.security.SpaCsrfTokenRequestHandler;
 import java.util.List;
@@ -18,7 +23,6 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,6 +33,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -47,7 +52,9 @@ public class SecurityConfig {
       JwtLoginSuccessHandler jwtLoginSuccessHandler,
       LoginFailureHandler loginFailureHandler,
       ObjectMapper objectMapper,
-      SessionRegistry sessionRegistry
+      SessionRegistry sessionRegistry,
+      JwtLogoutHandler jwtLogoutHandler,
+      JwtVerificationFilter jwtVerificationFilter
   )
       throws Exception {
     http
@@ -64,6 +71,7 @@ public class SecurityConfig {
             .logoutUrl("/api/auth/logout")
             .logoutSuccessHandler(
                 new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))
+            .addLogoutHandler(jwtLogoutHandler)
         )
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
@@ -71,6 +79,7 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/users"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/auth/login"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/auth/logout"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/auth/refresh"),
                 new NegatedRequestMatcher(AntPathRequestMatcher.antMatcher("/api/**"))
             ).permitAll()
             .anyRequest().authenticated()
@@ -82,7 +91,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
-        .rememberMe(Customizer.withDefaults())
+        .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
     ;
     return http.build();
   }
@@ -132,5 +141,10 @@ public class SecurityConfig {
   @Bean
   public HttpSessionEventPublisher httpSessionEventPublisher() {
     return new HttpSessionEventPublisher();
+  }
+
+  @Bean
+  public JwtRegistry jwtRegistry(JwtTokenProvider jwtTokenProvider) {
+    return new InMemoryJwtRegistry(1, jwtTokenProvider);
   }
 }

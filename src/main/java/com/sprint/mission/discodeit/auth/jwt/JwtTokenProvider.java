@@ -105,8 +105,6 @@ public class JwtTokenProvider  {
   }
 
   public Cookie generateRefreshTokenCookie(String refreshToken) {
-
-
     Cookie cookie = new Cookie("REFRESH_TOKEN", refreshToken);
 
     cookie.setHttpOnly(true);
@@ -128,5 +126,36 @@ public class JwtTokenProvider  {
     } catch (Exception e) {
       throw new RuntimeException("JWT 파싱 실패", e);
     }
+  }
+
+  public String getSubject(String token) {
+      if (validateToken(token)) {
+      throw new RuntimeException("JWT 검증 실패");
+    }
+    try {
+      SignedJWT signedJWT = SignedJWT.parse(token);
+      JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+      return claimsSet.getSubject();
+    } catch (Exception e) {
+      throw new RuntimeException("JWT 파싱 실패", e);
+    }
+
+  }
+
+  public void expireRefreshCookie(HttpServletResponse response) {
+    Cookie cookie = generateRefreshTokenExpirationCookie();
+
+    response.addCookie(cookie);
+  }
+
+  private Cookie generateRefreshTokenExpirationCookie() {
+    Cookie cookie = new Cookie("REFRESH_TOKEN", "");
+
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false);
+    cookie.setPath("/");
+    cookie.setMaxAge(0);
+
+    return cookie;
   }
 }

@@ -22,7 +22,7 @@ public class AdminInitializer implements ApplicationRunner {
 
   @Value("${discodeit.admin.username}")
   private String username;
-  @Value("${discodeit.admin.password}")
+  @Value("${discodeit.admin.password")
   private String password;
   @Value("${discodeit.admin.email}")
   private String email;
